@@ -23,7 +23,7 @@ def main():
     for path in args:
         try:
             os.makedirs(path)
-        except OSError, exc:
+        except (OSError, IOError), exc:
             if os.path.isdir(path):
                 info('Path already exists: %s' % path)
             else:
@@ -34,9 +34,16 @@ def main():
         fragments = path.split(os.path.sep)
         for i in xrange(len(fragments)):
             filename = os.path.sep.join(fragments[:i+1] + ['__init__.py'])
-            if not os.path.exists(filename):
-                open(filename, 'w').close()
-                info('Created file %s' % filename)
+            if not os.path.isfile(filename):
+                try:
+                    open(filename, 'w').close()
+                except (OSError, IOError), exc:
+                    if os.path.isfile(path):
+                        info('File already exists: %s' % filename)
+                    else:
+                        error('%s: %s' % (exc.strerror, filename))
+                else:
+                    info('Created file %s' % filename)
             else:
                 info('File already exists: %s' % filename)
 
