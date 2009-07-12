@@ -36,15 +36,15 @@ def main():
         fragments = path.split(os.path.sep)
         for i in xrange(len(fragments)):
             filename = os.path.sep.join(fragments[:i+1] + ['__init__.py'])
-            try:
-                open(filename, 'w').close()
-            except (OSError, IOError), exc:
-                if os.path.isfile(path):
-                    info('File already exists: %s' % filename)
-                else:
+            if not os.path.isfile(filename):
+                try:
+                    open(filename, 'w').close()
+                except (OSError, IOError), exc:
                     error('%s: %s' % (exc.strerror, filename))
+                else:
+                    info('Created file %s' % filename)
             else:
-                info('Created file %s' % filename)
+                info('File already exists: %s' % filename)
 
 if __name__ == '__main__':
     main()
