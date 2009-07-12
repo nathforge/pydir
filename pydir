@@ -1,0 +1,41 @@
+#!/usr/bin/python
+
+from optparse import OptionParser, Option
+import errno
+import os
+import sys
+
+def main():
+    def info(line):
+        if options.verbose:
+            sys.stderr.write(line)
+            sys.stderr.write('\n')
+    
+    parser = OptionParser(option_list=(
+        Option('-v', '--verbose', action='store_true', default=False),
+    ))
+    options, args = parser.parse_args()
+    
+    for path in args:
+        try:
+            os.makedirs(path)
+        except OSError, e:
+            if e.errno != errno.EEXIST:
+                raise
+            else:
+                info('Path already exists: %s' % path)
+        else:
+            info('Created directory %s' % path)
+        
+        fragments = path.split(os.path.sep)
+        for i in xrange(len(fragments)):
+            filename = os.path.sep.join(fragments[:i+1] + ['__init__.py'])
+            if not os.path.exists(filename):
+                open(filename, 'w').close()
+                info('Created file %s' % filename)
+            else:
+                info('File already exists: %s' % filename)
+
+if __name__ == '__main__':
+    main()
+
