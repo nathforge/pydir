@@ -1,7 +1,6 @@
 #!/usr/bin/python
 
 from optparse import OptionParser, Option
-import errno
 import os
 import sys
 
@@ -11,6 +10,11 @@ def main():
             sys.stderr.write(line)
             sys.stderr.write('\n')
     
+    def error(line):
+        sys.stderr.write(line)
+        sys.stderr.write('\n')
+        exit(1)
+    
     parser = OptionParser(option_list=(
         Option('-v', '--verbose', action='store_true', default=False),
     ))
@@ -19,11 +23,11 @@ def main():
     for path in args:
         try:
             os.makedirs(path)
-        except OSError, e:
-            if e.errno != errno.EEXIST:
-                raise
-            else:
+        except OSError, exc:
+            if os.path.isdir(path):
                 info('Path already exists: %s' % path)
+            else:
+                error('%s: %s' % (exc.strerror, path))
         else:
             info('Created directory %s' % path)
         
