@@ -21,6 +21,8 @@ def main():
     options, args = parser.parse_args()
     
     for path in args:
+        path = path.replace('.', os.path.sep)
+        
         try:
             os.makedirs(path)
         except (OSError, IOError), exc:
