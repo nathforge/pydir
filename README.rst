@@ -1,7 +1,7 @@
 Pydir
 =====
 
-Pydir is mkdir for Python modules.
+Pydir is mkdir for Python modules::
 
     $ pydir -v myproject/module/etc
     Created directory myproject/module/etc
