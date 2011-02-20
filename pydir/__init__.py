@@ -69,7 +69,7 @@ def pydir(path, output=None):
     for i in xrange(len(segments)):
         init_filename = os.path.sep.join(segments[:i+1] + ['__init__.py'])
         if not os.path.isfile(init_filename):
-            try:s
+            try:
                 open(init_filename, 'w').close()
             except (OSError, IOError), exc:
                 raise
