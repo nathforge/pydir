@@ -19,11 +19,11 @@ import os.path
 import sys
 
 
-VERSION = (0, 2)
+VERSION = (0, 2, 1)
 
 
 def version_string():
-    return '%d.%d' % VERSION
+    return '.'.join(str(component) for component in VERSION)
 
 
 def main():
