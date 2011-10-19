@@ -10,7 +10,7 @@ import pydir
 
 setup(
     name='pydir',
-    version='0.1',
+    version=pydir.version_string(),
     url='https://github.com/nathforge/pydir',
     description='Pydir is mkdir for Python modules',
     long_description=open('README.txt').read(),
